@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+</head>
+<body>
+    <input type="text" value="some text">
+    <p></p>
+
+    <script>
+        $('input').keyup(function(){ //키보드를 눌러서 값을 입력했을때'마다' (키에 손을 떼서 키가 올라왔을 때'마다')
+            let value = $(this).val();   //this는 '내가 선택한 Space'를 말한다. 여기서는 input 태그가 하나지만, input태그가 2개면 어쩔래?
+                                        //그래서 'input'대신 'this'를 써주자
+            $('p').text(value);
+        }).keyup() //한번 키업을 시킨것임 (이거 빼면 맨처음에 안뜨다가, 직접 입력을하면 그때서야 )
+    </script>
+</body>
+
+
+</html>
