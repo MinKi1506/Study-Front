@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <title>Document</title>
+    
+    <style>
+        .display{
+            display : none
+        }
+    </style>
+
+    <script> //아이디 중복 검사기능
+        $(document).ready(function(){ //document가 모두 준비되었을 때 실행한다
+            $('#check').click(function(){
+                let input_id = $('#post_id').val();
+                //비동기 통신을 이용하여 input_id값을 서버로 요청 -> mysql의 sql문으로 user table에 해당 id가 있는지 체크
+                $.get(
+                    '/check_id',
+                    {
+                        _id : input_id
+                    },
+                    function(result, status){
+                        if(result == '가입가능한 ID입니다'){
+                            $('#info').toggleClass('display')
+                            $('#check').toggleClass('display')
+                        }else{
+                            alert(result);
+                        }
+                    }
+                )
+            })
+        })
+    </script>
+</head>
+<body>
+    <form action="" method="">
+        <label>ID</label>
+        <input type="text" name="_id" id="post_id">  
+        <!-- id=유니크한 개념, name=유니크하진 않으며 데이터 전송할때 사용, class=유니크하진 않으며 css에 사용 -->
+        <span id="check">아이디 중복 체크</span>
+        <br>
+        <div id="info" class="display">
+            <label>Password</label>
+            <input type="password" name="_pass">
+            <br>
+            <label>Name</label>
+            <input type="text" name="_name">
+            <input type="submit">
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+
+    <script>
+        function ajax(){
+            $.ajax({
+                url : '/ajax',
+                data : {
+                    _name : 'test',
+                    _Phone : '0102345678'
+                },
+                method : 'get',
+                dataType : 'json' 
+            })
+            .done(function(result){
+                $('p').text(result.a);
+            })
+            .fail(function(xhr, status, err){
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            })
+            .always(function(xhr, status){
+                alert(status);
+            })
+        }
+    </script>
+    <script> //위의 코드보다 더 간단!
+        function post(){  //$.post -> $.post(url, data, function(result, status))의 형태로 간단히 통신한다!
+            $.post(
+                '/ajax_post',   
+            {
+                _name : 'test',
+                _phone : '12345678'
+            },
+            function(result, status){
+                alert(status);
+                $('p').text(result.a);
+            })
+        }
+    </script>
+    <script> //위의 코드와 다른점: 데이터를 json형태로만 받겠다 라는 뜻! post는 불가하며, get 통신만 가능한다보다
+        function get_json(){
+            $.getJSON(
+                '/ajax_getjson',
+                {
+                    _name : 'test'
+                },
+                function(result, status){
+                    alert(status);
+                    $('p').text(result.a);
+                }
+            )
+        }
+    </script>
+</head>
+
+<body>
+    <p></p>
+    <button onclick="ajax()">ajax_get</button>
+    <button onclick="post()">ajax_post</button>
+    <button onclick="get_json()">ajax_get_json</button>
+</body>
+
+
+</html>
