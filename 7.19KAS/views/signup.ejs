@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>    
+    <script>
+        $(document).ready(function(){
+            $('#create').click(function(){
+                $.get(
+                    '/get_wallet',
+                    function(result, status){
+                        if(status == 'success'){
+                            $('#wallet').val(result.address);
+                        }
+                    }
+                )
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>회원가입 페이지</h1>
+    <form action="/signup2" method="post">
+        <label>ID</label>
+        <input type="text" name="_id">
+        <br>
+        <label>Password</label>
+        <input type="password" name="_password">
+        <br>
+        <input type="text" name="_wallet" id="wallet">
+        <h3 id="create">지갑 생성</h3> 
+        <br>
+        <input type="submit" id="submit">
+    </form>
+
+</body>
+</html>
