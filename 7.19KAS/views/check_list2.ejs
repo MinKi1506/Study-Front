@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Blog Template · Bootstrap v5.0</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+  </head>
+
+
+  <body>
+    <h3><%=list[0][1]%></h3>
+    <form action="/add_review2" method="post">
+        <table class="'table">
+            <thead>
+                <tr>
+                    <th>점검자</th>
+                    <th>점검 결과</th>
+                    <th>점검 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if(list.length == 0) {%>
+                    <tr>
+                        <td colspan="3">등록된 점검 결과가 없습니다.</td>
+                    </tr>
+                <%}else{
+                    for(let i = 0; i < list.length; i++){%>
+                        <tr>
+                            <td><%=list[i][0]%></td>
+                            <td><%=list[i][2]%></td>
+                            <td><%=list[i][3]%></td>
+                        </tr>
+                    <%}
+                }%>
+            </tbody>
+            <input type="submit">
+        </table>
+    </form>
+
+
+<footer class="blog-footer">
+  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+  <p>
+    <a href="#">Back to top</a>
+  </p>
+</footer>
+
+
+    
+  </body>
+</html>

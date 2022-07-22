@@ -1,6 +1,7 @@
 let express = require('express');
 let app = express();
 require('dotenv').config();
+let moment = require('moment');
 
 let session =require('express-session');
 app.use(
@@ -24,6 +25,13 @@ let Caver = require('caver-js');
 let CaverExtKAS = require('caver-js-ext-kas');
 let caver = new CaverExtKAS();
 
+//klaytn contract 연결
+let cav = new Caver('https://api.baobab.klaytn.net:8651');
+let product_contract = require('./build/contracts/safe,json');
+let smartcontract = new cav.klay.Contract(product_contract.abi, product_contract.networks['1001'].address);
+let account = cav.klay.accounts.createWithAccountKey(process.env.address, process.env.privatekey);
+cav.klay.accounts.wallet.add(account);
+
 
 let keyringContainer = new caver.keyringContainer();
 let keyring = keyringContainer.keyring.createFromPrivateKey('0x3d54228003bf9a4d3e5c18dbb108e8e4dd6518a49cdb3c6480879b7061aa46dc');  
@@ -38,7 +46,8 @@ kip7.setWallet(keyringContainer); //kip7 내의 wallet 설정
 //klaytn설정 끝
 
 //mysql 설정
-var mysql = require("mysql2")
+var mysql = require("mysql2");
+const { isKRN } = require('caver-js-ext-kas/src/utils/helper');
 var connection = mysql.createConnection({
     host : process.env.host,
     port : process.env.port, 
@@ -201,6 +210,126 @@ app.get('/list', function(req, res){
     }
 })
 
+app.get('check', function(req, res){
+    if(!req.session.login){
+        res.redirect('/');
+    }else{
+        let num = req.query._num;
+        res.render('check.ejs', {
+            num : num
+        })
+    }
+})
+
+app.post('/check2', function(req, res){
+    /*
+    contract에서 add_check()함수에 매개변수  -> 로그인을 한 사람의 지갑 주소, 차량 번호(리뷰 번호), 점검 결과, 현재시간
+    check1,2,3 -> 점검 결과
+    로그인한 사람의 지갑 주소 -> req.session.login.wallet 에 존재한다!
+    현재시간 -> moment 라이브러리 사용하여 현재시간
+    */
+    let check1 = req.body.check1;
+    let check2 = req.body.check2;
+    let check3 = req.body.check3;
+    let checks = check1 + check2 +check3;
+    let checker = req.session.login.wallet;
+    let check_date = moment().format('YYYY/MM/DD HH:mm:ss');
+    console.log(check1,check2,check3,checker,check_date);
+    if(!req.session.login){
+        res.redirect('/')
+    }else{
+        smartcontract.methods
+        .add_check(checker, num, checks, check_date)
+        .send({
+            from : account.address,
+            gas : 2000000
+        })
+        .then(function(receipt){
+            console.log(receipt);
+            res.redirect('/reward');
+        })
+    }
+
+    //점검을 한 사람에게 리워드 주기
+app.get('/reward', function(req, res){
+    let address = req.session.login.wallet;
+    let reward = 10;
+    token_trans(address, reward).then(function(receipt){
+        console.log(receipt);
+        res.redirect('/main');
+    })
+})
+
+app.get('/check_list', function(req, res){
+    if(!req.session.login){
+        res.redirect('/');
+    }else{
+        connection.query(
+            `select * from review_list`,
+            function(err, result){
+                if(err){
+                    console.log('리뷰 불러오기 에러: '+err);
+                }else{
+                        res.render('review_list_m.ejs', {
+                            list : result
+                        })
+                }
+            }
+        )
+    }
+})
+
+app.get('/check_info', function(req, res){
+    if(!req.session.login){
+        res.redirect('/');
+    }else{
+        let num = req.query._num;
+        smartcontract.methods
+        .get_list(num)
+        .call()
+        .then(function(receipt){
+            console.log(receipt);
+            res.render('check_info.ejs', {
+                result : receipt
+            })
+        })
+    }
+})
+
+//해당 리뷰 num을 가진 모든 점검사항들을 리스트형태로 보여주는 api
+app.get('/check_info2', function(req, res){
+    if(!req.session.login){
+        res.redirect('/');
+    }else{
+        let num = req.query._num;
+        let check_array = new Array();
+        smartcontract.methods
+        .total_count()
+        .call()
+        .then(function(count){
+            for(let i = 0; i < count; i++){
+                smartcontract.methods
+                .get_checks(i)
+                .call()
+                .then(function(receipt){
+                    if(receipt[1] == num){
+                        check_array.push(receipt);
+                    }
+                })
+            }
+        })
+
+        console.log(check_array)
+        res.render('check_list2.ejs', {
+            list : check_array
+        })
+
+    }
+})
+
+
+
+})
 
 
 

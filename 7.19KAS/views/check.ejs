@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Blog Template · Bootstrap v5.0</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/blog/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/blog.css" rel="stylesheet">
+  </head>
+
+<br>
+
+<form action="/check2" method="posst">
+  <div style="display: none;">
+    <input type="text" name="_num" value="<%=num%>" readonly>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>점검 내용</th>
+        <th>점검 결과</th>
+      </tr>
+    </thead>
+
+  <tbody>
+    <td>충분한가?</td>
+    <td>
+      <input type="radio" id="1" name="check1" value="t" checked />
+      <label for="1">예</label>
+      <input type="radio" id="2" name="check2" value="f" />
+      <label for="2">아니오</label>
+    </td>
+    </tr>
+    <tr>
+      <td>재밌는가?</td>
+      <td>
+        <input type="radio" id="3" name="check1" value="t" checked />
+        <label for="3">예</label>
+        <input type="radio" id="4" name="check2" value="f" />
+        <label for="4">아니오</label>
+      </td>
+    </tr>
+    <tr>
+      <td>가격은 비싼가?</td>
+      <td>
+        <input type="radio" id="5" name="check1" value="t" checked />
+        <label for="5">예</label>
+        <input type="radio" id="6" name="check2" value="f" />
+        <label for="6">아니오</label>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+  <input type="submit">
+</form>
+
+
+<footer class="blog-footer">
+  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+  <p>
+    <a href="#">Back to top</a>
+  </p>
+</footer>
+
+
+    
+  </body>
+</html>

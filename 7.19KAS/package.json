@@ -17,6 +17,7 @@
     "env": "^0.0.2",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "session": "^0.1.0",
     "truffle-hdwallet-provider-klaytn": "^1.4.2"
